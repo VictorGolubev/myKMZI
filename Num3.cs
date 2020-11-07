@@ -54,7 +54,7 @@ namespace GolubevV
 
 
             Console.WriteLine("Расшифрование\n");
-            Console.Write("Введите текст шифруемого сообщения -> ");
+            Console.Write("Введите текст зашифрованного сообщения -> ");
             string encodedText = Console.ReadLine();
             byte[] decodedText = new byte[encodedText.Split(',').Length];
             int counter = 0;

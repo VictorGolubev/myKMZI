@@ -30,7 +30,7 @@ namespace GolubevV
             log.Info("Перевод первого подключа {0} в двоичный код (кодировка ASCII) X0 = {1}\n",X0,X0_bi);
 
             List<int> x0 = reducingX0(X0_bi);
-            log.Info("Уменьшаем длину ключа X0 до 48 бит\n Резулььтат Х0 = {0}\n", HELP.list2str(x0));
+            log.Info("Уменьшаем длину ключа X0 до 48 бит\n Результат Х0 = {0}\n", HELP.list2str(x0));
 
             List<int> txt_bi = replaceTXT(HELP.str2list(TXT_bi));
             log.Info("Выполняем операцию перестановки битовой последовательности исходного сообщения.\nРезультат = {0}\n", HELP.list2str(txt_bi));
@@ -52,6 +52,9 @@ namespace GolubevV
 
             sumXORO = substitutionsSBox(sumXORO);
             log.Info("Результат подстановок из таблиц = {0}\n", HELP.list2str(sumXORO));
+
+            sumXORO = replaceAfterSbox(sumXORO);
+            log.Info("Результат перестановки = {0}\n", HELP.list2str(sumXORO));
 
             sumXORO.AddRange(L0);
             log.Info("Обхединение R и L = {0}\n", HELP.list2str(sumXORO));
@@ -140,31 +143,54 @@ namespace GolubevV
         private static List<int> substitutionsSBox(List<int> sumXORO)
         {
             List<int> result = new List<int>();
-
-            int fromS1 = HELP.sBox1[sumXORO[0] * 2 + sumXORO[5]][sumXORO[1] * 8 + sumXORO[2] * 4 + sumXORO[3] * 2 + sumXORO[4]];
+            int row, column;
+            row = sumXORO[0] * 2 + sumXORO[5];
+            column = sumXORO[1] * 8 + sumXORO[2] * 4 + sumXORO[3] * 2 + sumXORO[4];
+            int fromS1 = HELP.sBox1[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS1, 2).PadLeft(4,'0')));
-            log.Info("s- box1: {0}\n", Convert.ToString(fromS1, 2).PadLeft(4, '0'));
-            int fromS2 = HELP.sBox2[sumXORO[6] * 2 + sumXORO[11]][sumXORO[7] * 8 + sumXORO[8] * 4 + sumXORO[9] * 2 + sumXORO[10]];
+            log.Info("s-box1: Строка-{0} Столбец-{1} Значиение-{2}-{3}",row,column,fromS1,Convert.ToString(fromS1, 2).PadLeft(4, '0'));
+
+            row = sumXORO[6] * 2 + sumXORO[11];
+            column = sumXORO[7] * 8 + sumXORO[8] * 4 + sumXORO[9] * 2 + sumXORO[10];
+            int fromS2 = HELP.sBox2[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS2, 2).PadLeft(4, '0')));
-            log.Info("s- box2: {0}\n", Convert.ToString(fromS2, 2));
-            int fromS3 = HELP.sBox3[sumXORO[12] * 2 + sumXORO[17]][sumXORO[13] * 8 + sumXORO[14] * 4 + sumXORO[15] * 2 + sumXORO[16]];
+            log.Info("s-box2: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS2, Convert.ToString(fromS2, 2).PadLeft(4, '0'));
+
+            row = sumXORO[12] * 2 + sumXORO[17];
+            column = sumXORO[13] * 8 + sumXORO[14] * 4 + sumXORO[15] * 2 + sumXORO[16];
+            int fromS3 = HELP.sBox3[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS3, 2).PadLeft(4, '0')));
-            log.Info("s- box3: {0}\n", Convert.ToString(fromS3, 2));
-            int fromS4 = HELP.sBox4[sumXORO[18] * 2 + sumXORO[23]][sumXORO[19] * 8 + sumXORO[20] * 4 + sumXORO[21] * 2 + sumXORO[22]];
+            log.Info("s-box3: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS3, Convert.ToString(fromS3, 2).PadLeft(4, '0'));
+
+            row = sumXORO[18] * 2 + sumXORO[23];
+            column = sumXORO[19] * 8 + sumXORO[20] * 4 + sumXORO[21] * 2 + sumXORO[22];
+            int fromS4 = HELP.sBox4[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS4, 2).PadLeft(4, '0')));
-            log.Info("s- box4: {0}\n", Convert.ToString(fromS4, 2));
-            int fromS5 = HELP.sBox5[sumXORO[24] * 2 + sumXORO[29]][sumXORO[25] * 8 + sumXORO[26] * 4 + sumXORO[27] * 2 + sumXORO[28]];
+            log.Info("s-box4: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS4, Convert.ToString(fromS4, 2).PadLeft(4, '0'));
+
+            row = sumXORO[24] * 2 + sumXORO[29];
+            column = sumXORO[25] * 8 + sumXORO[26] * 4 + sumXORO[27] * 2 + sumXORO[28];
+            int fromS5 = HELP.sBox5[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS5, 2).PadLeft(4, '0')));
-            log.Info("s- box5: {0}\n", Convert.ToString(fromS5, 2));
-            int fromS6 = HELP.sBox6[sumXORO[30] * 2 + sumXORO[35]][sumXORO[31] * 8 + sumXORO[32] * 4 + sumXORO[33] * 2 + sumXORO[34]];
+            log.Info("s-box5: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS5, Convert.ToString(fromS5, 2).PadLeft(4, '0'));
+
+            row = sumXORO[30] * 2 + sumXORO[35];
+            column = sumXORO[31] * 8 + sumXORO[32] * 4 + sumXORO[33] * 2 + sumXORO[34];
+            int fromS6 = HELP.sBox6[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS6, 2).PadLeft(4, '0')));
-            log.Info("s- box6: {0}\n", Convert.ToString(fromS6, 2));
-            int fromS7 = HELP.sBox7[sumXORO[36] * 2 + sumXORO[41]][sumXORO[37] * 8 + sumXORO[38] * 4 + sumXORO[39] * 2 + sumXORO[40]];
+            log.Info("s-box6: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS6, Convert.ToString(fromS6, 2).PadLeft(4, '0'));
+
+            row = sumXORO[36] * 2 + sumXORO[41];
+            column = sumXORO[37] * 8 + sumXORO[38] * 4 + sumXORO[39] * 2 + sumXORO[40];
+            int fromS7 = HELP.sBox7[row][column];           
             result.AddRange(HELP.str2list(Convert.ToString(fromS7, 2).PadLeft(4, '0')));
-            log.Info("s- box7: {0}\n", Convert.ToString(fromS7, 2));
-            int fromS8 = HELP.sBox8[sumXORO[42] * 2 + sumXORO[47]][sumXORO[43] * 8 + sumXORO[44] * 4 + sumXORO[45] * 2 + sumXORO[46]];
+            log.Info("s-box7: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS7, Convert.ToString(fromS7, 2).PadLeft(4, '0'));
+
+            row = sumXORO[42] * 2 + sumXORO[47];
+            column = sumXORO[43] * 8 + sumXORO[44] * 4 + sumXORO[45] * 2 + sumXORO[46];
+            int fromS8 = HELP.sBox8[row][column];
             result.AddRange(HELP.str2list(Convert.ToString(fromS8, 2).PadLeft(4, '0')));
-            log.Info("s- box8: {0}\n", Convert.ToString(fromS8, 2));
+            log.Info("s-box8: Строка-{0} Столбец-{1} Значиение-{2}-{3}", row, column, fromS8, Convert.ToString(fromS8, 2).PadLeft(4, '0'));
 
             return result;
         }
@@ -174,18 +200,54 @@ namespace GolubevV
             List<int> result = new List<int>();
             for (int i = 0; i < 32; i += 4)
             {
-                result.Add(1);
+                result.Add(R0[i-1 < 0 ? 31 : i-1]);
                 result.Add(R0[i]);
                 result.Add(R0[i + 1]);
                 result.Add(R0[i + 2]);
                 result.Add(R0[i + 3]);
-                result.Add(1);
+                result.Add(R0[i+4 > 31 ? 0 : i+4]);
             }
 
             return result;
 
         }
-
+        private static List<int> replaceAfterSbox(List<int> r)
+        {
+            List<int> result = new List<int>();
+            result.Add(r[15]);
+            result.Add(r[6]);
+            result.Add(r[19]);
+            result.Add(r[20]);
+            result.Add(r[28]);
+            result.Add(r[11]);
+            result.Add(r[27]);
+            result.Add(r[16]);
+            result.Add(r[0]);
+            result.Add(r[14]);
+            result.Add(r[22]);
+            result.Add(r[25]);
+            result.Add(r[4]);
+            result.Add(r[17]);
+            result.Add(r[30]);
+            result.Add(r[9]);
+            result.Add(r[1]);
+            result.Add(r[7]);
+            result.Add(r[23]);
+            result.Add(r[13]);
+            result.Add(r[31]);
+            result.Add(r[26]);
+            result.Add(r[2]);
+            result.Add(r[8]);
+            result.Add(r[18]);
+            result.Add(r[12]);
+            result.Add(r[29]);
+            result.Add(r[5]);
+            result.Add(r[21]);
+            result.Add(r[10]);
+            result.Add(r[3]);
+            result.Add(r[24]);
+            return result;
+        }
         private static List<int> replaceTXT(List<int> x0)
         {
             List<int> result = new List<int>();

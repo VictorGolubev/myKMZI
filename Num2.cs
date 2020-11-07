@@ -13,7 +13,7 @@ namespace GolubevV
             log.Info("Задание №2. Алгоритм шифрования ГОСТ 28147-89. Выполните первый цикл\nалгоритма шифрования ГОСТ 28147 89 в режиме простой замены. Для\nполучения 64 бит исходного текста используйте 8 первых букв из своих\nданных: Фамилии Имени Отчества. Для получения ключа (256 бит)\nиспользуют текст, состоящий из 32 букв. Первый подключ содержит первые 4 буквы.\n");
             log.Info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>\n\n");
             Console.Clear();
-            Console.WriteLine("Задание №1");
+            Console.WriteLine("Задание №2");
             //Ввод и перевод в двоичную систему
             Console.Write("Введите исходный текст (8 букв) -> ");
             string TXT = Console.ReadLine();
@@ -26,9 +26,9 @@ namespace GolubevV
             log.Info("Перевод подключа {0} в двоичный код (кодировка ASCII) = {1}\n", x0, x0_bi);
 
             List<int> L0 = HELP.getL0(HELP.str2list(TXT_bi));
-            log.Info("L0 = ",HELP.list2str(L0));
+            log.Info("L0 = {}",HELP.list2str(L0));
             List<int> R0 = HELP.getR0(HELP.str2list(TXT_bi));
-            log.Info("R0 = ", HELP.list2str(R0));
+            log.Info("R0 = {}", HELP.list2str(R0));
 
             List<int> sum_mod_32 = F_R0X0(R0, HELP.str2list(x0_bi));
             log.Info("Результат суммирования R0 + X0 по mod 2^32 = {0}\n", HELP.list2str(sum_mod_32));
@@ -46,7 +46,7 @@ namespace GolubevV
 
             log.Info("Результат. R1 = {0}", Convert.ToString(R1, 2).PadLeft(32, '0'));
 
-            Console.WriteLine("Результат. R1 = {0}", Convert.ToString(R1,2).PadLeft(32,'0'));
+            Console.WriteLine("Результат R1 = {0}", Convert.ToString(R1,2).PadLeft(32,'0'));
             Console.WriteLine("Подробности в логах.");
             Console.WriteLine("Чтобы вернуться в меню нажмите Enter...");
             Console.ReadLine();

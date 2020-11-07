@@ -31,10 +31,10 @@ namespace GolubevV
             log.Info("Сообщение = {}", text);
 
             Console.WriteLine("Хэш {0} -> {1}\n", text, Convert.ToString(HELP.getHash(text,H,n,log)));
-            log.Info("Хэш {0} -> {1}", text, Convert.ToString(H));
+            log.Info("Хэш {0} -> {1}", text, Convert.ToString(HELP.getHash(text, H, n, log)));
 
 
-            Console.WriteLine("Подробности в логах.");
+            Console.WriteLine("Подробности в логах.");  
             Console.WriteLine("Чтобы вернуться в меню нажмите Enter...");
             Console.ReadLine();
         }
