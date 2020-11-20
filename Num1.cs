@@ -120,7 +120,7 @@ namespace GolubevV
             result.Add(RL[18]);
             result.Add(RL[58]);
             result.Add(RL[26]);
-            result.Add(RL[31]);
+            result.Add(RL[33]);
             result.Add(RL[1]);
             result.Add(RL[41]);
             result.Add(RL[9]);
